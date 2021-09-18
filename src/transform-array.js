@@ -1,19 +1,25 @@
-import { NotImplementedError } from '../extensions/index.js';
-
-/**
- * Create transformed array based on the control sequences that original
- * array contains
- * 
- * @param {Array} arr initial array
- * @returns {Array} transformed array
- * 
- * @example
- * 
- * transform([1, 2, 3, '--double-next', 4, 5]) => [1, 2, 3, 4, 4, 5]
- * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
- * 
- */
-export default function transform(/* arr */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+export default function transform(arr) {
+  if (!Array.isArray(arr)) throw new Error("'arr' parameter must be an instance of the Array!")
+  let res = [...arr]
+  for (let x = 0; x < res.length; x++) {
+    switch (res[x]) {
+      case '--double-next':
+        res[x] = res[x + 1]
+        break
+      case '--double-prev':
+        res[x] = res[x - 1]
+        break
+      case '--discard-next':
+        res[x] = undefined
+        res[x + 1] = undefined
+        break
+      case '--discard-prev':
+        res[x] = undefined
+        res[x - 1] = undefined
+        break
+      default:
+        break
+    }
+  }
+  return res.filter(x => x !== undefined)
 }
